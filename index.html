@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sasha G. Behar</title>
+  <meta name="description" content="Portfolio of Sasha G. Behar, Franco-American writer and painter living between Paris and New York." />
+  <link rel="icon" type="image/png" href="Logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="home">
+
+
+
+  <!-- ===========================================================
+       HEADER  (shared across pages)
+       Logo + double-rule navigation, like a newspaper masthead.
+       Logo shrinks automatically on inner pages (driven by
+       body[data-page="..."] in style.css).
+       =========================================================== -->
+  <header class="site-header">
+    <a href="#home" class="logo-link" data-section="home" aria-label="Sasha G. Behar &mdash; Home">
+      <img src="LOGO.jpg" alt="Sasha G. Behar" class="logo" />
+    </a>
+
+    <nav class="main-nav" aria-label="Primary navigation">
+      <ul class="nav-list">
+        <li><a href="#work" data-section="work">Work</a></li>
+
+        <!-- Paintings is a category, not a page. Hover/focus reveals series. -->
+        <li class="has-dropdown">
+          <button type="button" class="nav-trigger" aria-haspopup="true" aria-expanded="false">Paintings</button>
+          <ul class="nav-dropdown" aria-label="Painting series">
+            <li><a href="#paintings-buailabhaile" data-section="paintings-buailabhaile"><em>Buail Abhaile</em></a></li>
+            <li><a href="#paintings-grayhairs"    data-section="paintings-grayhairs"><em>Egypt is Within You</em></a></li>
+          </ul>
+        </li>
+
+        <!-- Drawings is a category, not a page. Hover/focus reveals series.
+             Order: Girlobouros first, TV Dinner second. -->
+        <li class="has-dropdown">
+          <button type="button" class="nav-trigger" aria-haspopup="true" aria-expanded="false">Drawings</button>
+          <ul class="nav-dropdown" aria-label="Drawing series">
+            <li><a href="#drawings-girlobouros" data-section="drawings-girlobouros"><em>Girlobouros</em></a></li>
+            <li><a href="#drawings-tvdinner"    data-section="drawings-tvdinner"><em>TV Dinner</em></a></li>
+          </ul>
+        </li>
+
+        <li><a href="#about"   data-section="about">About</a></li>
+        <li><a href="#contact" data-section="contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="site-main">
+
+    <!-- ===========================================================
+         HOME / HERO
+         Openingphoto.png is the base. Each cursive title (Scripts /
+         Drawings / About / Paintings) is a cropped label PNG placed
+         at percentage-of-hero coordinates derived from the painted
+         bbox of the original full-canvas title PNG. The anchors
+         themselves are the click + hover targets.
+         =========================================================== -->
+    <section id="home" class="page page--home is-active">
+      <div class="hero">
+        <!-- Hero artwork: the four girls with their banners. -->
+        <picture class="hero-picture">
+          <img src="Openingphoto.png"
+               alt="Four girls each holding a banner: Scripts, Drawings, About, Paintings"
+               class="hero-image" />
+        </picture>
+
+        <!-- Cursive title overlays — full-hero PNGs authored at the same
+             aspect ratio as Openingphoto, so each title sits exactly on its
+             banner when overlaid at 100% × 100%. Pointer-events: none so
+             they don't block the .hotspot anchors stacked over them. -->
+        <img src="Scripts.png"   alt="" class="banner-overlay banner-overlay--scripts"   aria-hidden="true" />
+        <img src="Drawings.png"  alt="" class="banner-overlay banner-overlay--drawings"  aria-hidden="true" />
+        <img src="About.png"     alt="" class="banner-overlay banner-overlay--about"     aria-hidden="true" />
+        <img src="Paintings.png" alt="" class="banner-overlay banner-overlay--paintings" aria-hidden="true" />
+
+        <!-- Click targets over each banner. Hovering one lifts the matching
+             overlay via :has() — driving the subtle hover-rise effect. -->
+        <a href="#work"                   class="hotspot hotspot--scripts"   data-section="work"                   aria-label="Go to Scripts"></a>
+        <a href="#drawings-girlobouros"   class="hotspot hotspot--drawings"  data-section="drawings-girlobouros"   aria-label="Go to Drawings"></a>
+        <a href="#about"                  class="hotspot hotspot--about"     data-section="about"                  aria-label="Go to About"></a>
+        <a href="#paintings-buailabhaile" class="hotspot hotspot--paintings" data-section="paintings-buailabhaile" aria-label="Go to Paintings"></a>
+      </div>
+    </section>
+
+    <!-- ===========================================================
+         WORK / SCREENWRITING
+         3-column editorial list:
+           [poster] | [TITLE / format] | [description + awards]
+         Add a new script by duplicating one <article class="script">.
+         =========================================================== -->
+    <section id="work" class="page page--work">
+      <h1 class="page-title">Screenwriting</h1>
+      <h2 class="screenwriting-subhead">Spec Work</h2>
+
+      <div class="scripts-list">
+
+        <article class="script">
+          <div class="script-poster">
+            <img src="Skunkhour.gif" alt="Skunk Hour &mdash; poster" />
+          </div>
+          <div class="script-meta">
+            <h2 class="script-title">Skunk Hour</h2>
+            <p class="script-format"><em>Feature Film</em></p>
+          </div>
+          <div class="script-body">
+            <p class="script-description">As a lockout at NYC&rsquo;s energy provider plunges the city into uncertainty, the children of two dysfunctional families must reconsider their lives and choose between breaking free from the madness or being consumed by it. &copy;</p>
+            <div class="script-awards">
+              <span class="award-badge">
+                <span class="award-text">Austin Film Festival 2024</span>
+              </span>
+              <span class="award-badge">
+                <span class="award-text">Top 10% of all 150K+ scripts on Coverfly</span>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="script">
+          <div class="script-poster">
+            <img src="Ceuxdecheznous.png" alt="Ceux de chez nous &mdash; poster" />
+          </div>
+          <div class="script-meta">
+            <h2 class="script-title">Ceux de Chez Nous</h2>
+            <p class="script-format"><em>Feature Film (written in French)</em></p>
+          </div>
+          <div class="script-body">
+            <p class="script-description">In 1961 Paris, two disillusioned Algerian War veterans, a Sephardic Jew and an Arab, orchestrate an elaborate heist of the m&eacute;tro&rsquo;s armored money train, <em>La Voie des Finances</em>. &copy;</p>
+          </div>
+        </article>
+
+        <article class="script">
+          <div class="script-poster">
+            <img src="HailMary.png" alt="Hail Mary &mdash; poster" />
+          </div>
+          <div class="script-meta">
+            <h2 class="script-title">Hail Mary</h2>
+            <p class="script-format"><em>Short Film</em></p>
+          </div>
+          <div class="script-body">
+            <p class="script-description">All hell breaks loose when Maria and her brothers, stuck helping their alcoholic father on a construction job in wealthy suburban California, cross paths with a strange Irish girl. &copy;</p>
+            <div class="script-awards">
+              <span class="award-badge">
+                <span class="award-text">Filmmatic Inroads Fellowship</span>
+              </span>
+              <span class="award-badge">
+                <span class="award-text">Top 15% of all 150K+ scripts on Coverfly</span>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="script">
+          <div class="script-poster">
+            <img src="Monuments.png" alt="Monuments &mdash; poster" />
+          </div>
+          <div class="script-meta">
+            <h2 class="script-title">Monuments</h2>
+            <p class="script-format"><em>Pilot</em></p>
+          </div>
+          <div class="script-body">
+            <p class="script-description">The rise and exile of Robert F. Williams, the often overlooked and misunderstood revolutionary civil rights leader, whose journey &mdash; from fighting the KKK with machine guns in Jim Crow South to seeking refuge in Communist China &mdash; redefined Black resistance. &copy;</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===========================================================
+         PAINTINGS — series pages
+         Each series is its own standalone page. Reach them via the
+         Paintings dropdown in the nav (or via the home banner).
+         =========================================================== -->
+
+    <!-- ---- Buail Abhaile ---- -->
+    <section id="paintings-buailabhaile" class="page page--gallery">
+      <h1 class="page-title gallery-title">Buail Abhaile &mdash; &ldquo;Go Home&rdquo;</h1>
+      <!-- Row 1 — three works -->
+      <div class="gallery-grid gallery-grid--3">
+        <figure>
+          <img src="Plastic.png" alt="Plastic" />
+          <figcaption><strong><em>Plastic</em></strong><br /><em>Oil on canvas, 30 x 30 cm</em></figcaption>
+        </figure>
+        <figure>
+          <img src="Teeth.jpg" alt="Teeth" />
+          <figcaption><strong><em>Teeth</em></strong><br /><em>Oil on canvas, 30 x 46 cm</em></figcaption>
+        </figure>
+        <figure>
+          <img src="Paddy.png" alt="Paddy" />
+          <figcaption><strong><em>Paddy</em></strong><br /><em>Oil on canvas, 30 x 30 cm</em></figcaption>
+        </figure>
+      </div>
+      <!-- Row 2 — own grid; sizing handled by the unified flex layout below -->
+      <div class="gallery-grid gallery-grid--2">
+        <figure>
+          <img src="Ladybugflyawayhome.png" alt="Lady Bug, Fly Away Home" />
+          <figcaption><strong><em>Lady Bug, Fly Away Home</em></strong><br /><em>Oil on canvas, 46 x 35 cm</em></figcaption>
+        </figure>
+        <figure>
+          <img src="Cross.png" alt="Cross" />
+          <figcaption><strong><em>Cross</em></strong><br /><em>Oil on canvas, 92 x 76 cm</em></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ---- Egypt is Within You (formerly Gray Hairs) ---- -->
+    <section id="paintings-grayhairs" class="page page--gallery gallery--compact">
+      <h1 class="page-title gallery-title"><span lang="he" dir="rtl">&#x05D6;&#x05B8;&#x05DB;&#x05D5;&#x05B9;&#x05E8; &#x05DB;&#x05BC;&#x05B4;&#x05D9; &#x05D9;&#x05B5;&#x05E9;&#x05C1; &#x05DE;&#x05B4;&#x05E6;&#x05B0;&#x05E8;&#x05B7;&#x05D9;&#x05B4;&#x05DD; &#x05D1;&#x05BC;&#x05B0;&#x05E7;&#x05B4;&#x05E8;&#x05B0;&#x05D1;&#x05BC;&#x05B6;&#x05DA;&#x05B8;</span> &mdash; &ldquo;Remember that Egypt is within you&rdquo;</h1>
+      <!-- Top row: the two small square works, sat close together at an
+           identical size. Their own .gallery-grid keeps them tight; the
+           carousel scopes to the whole page, so all five still cycle. -->
+      <div class="gallery-grid gallery-grid--pair">
+        <figure>
+          <img src="Inmypalm.png?v=2" alt="In My Palm" />
+          <figcaption><strong><em>In My Palm</em></strong><br /><em>Oil x pastel on canvas, 30 x 30 cm, 2022</em></figcaption>
+        </figure>
+        <figure>
+          <img src="Lashesoffire.png" alt="Lashes of Fire" />
+          <figcaption><strong><em>Lashes of Fire</em></strong><br /><em>Oil x pastel on canvas, 30 x 30 cm, 2023</em></figcaption>
+        </figure>
+      </div>
+      <div class="gallery-grid gallery-grid--2">
+        <figure class="span-2 is-medium">
+          <img src="Chayim.png" alt="Chayim" />
+          <figcaption><strong><em>Chayim</em></strong><br /><em>Oil on canvas, 2022</em></figcaption>
+        </figure>
+        <figure class="span-2 is-medium">
+          <img src="Upsherin.png" alt="Upsherin" />
+          <figcaption><strong><em>Upsherin</em></strong><br /><em>Oil x pastel on canvas, 2025</em></figcaption>
+        </figure>
+        <!-- Final piece in the Egypt is Within You series — replace src with your file -->
+        <figure class="span-2 is-medium">
+          <img src="Untitled1.png" alt="Untitled" />
+          <figcaption><strong><em>Untitled</em></strong><br /><em>Oil on canvas, 2023</em></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===========================================================
+         DRAWINGS — series pages
+         Same pattern as Paintings.
+         =========================================================== -->
+
+    <!-- ---- Girlobouros ---- -->
+    <!-- Layout follows the mockup: a small intro card, the Plath quote,
+         then row-based grids (3 / 2 / 3 / 2). -->
+    <section id="drawings-girlobouros" class="page page--gallery">
+      <h1 class="page-title gallery-title">Girlobouros</h1>
+
+      <p class="gallery-blurb">&ldquo;Girl, aging girl, is haunted by own nothingness and devours views from windows (stories, movies, overheard talk and sights in the street, pictures in newspapers, etc.) with continuous feeling she is &lsquo;just about&rsquo;, miraculously, to come into her own &ndash; her own life.&rdquo; <span class="gallery-blurb-credit">&mdash; Sylvia Plath, <em>The Unabridged Journals of Sylvia Plath</em></span></p>
+
+      <!-- Row 1 — 3 columns: Mean Bone, :|, Bottom Feeder -->
+      <div class="gallery-grid gallery-grid--3">
+        <figure>
+          <img src="Meanbone.png" alt="Mean Bone" />
+          <figcaption><strong><em>Mean Bone</em></strong><br /><em>Pen on moleskine notebook, 2024</em></figcaption>
+        </figure>
+        <figure>
+          <img src="affable.png" alt=":|" />
+          <figcaption><strong><em>:|</em></strong><br /><em>Digital drawing, 2024</em></figcaption>
+        </figure>
+        <figure>
+          <img src="bottomfeeder.png" alt="Bottom Feeder" />
+          <figcaption><strong><em>Bottom Feeder</em></strong><br /><em>Pen on moleskine notebook, 2023</em></figcaption>
+        </figure>
+      </div>
+
+      <!-- Row 2 — 2 columns: Unfinished, Untitled -->
+      <div class="gallery-grid gallery-grid--2">
+        <figure>
+          <img src="unfinished.png" alt="Unfinished" />
+          <figcaption><strong><em>Unfinished</em></strong><br /><em>Charcoal on paper, 50 x 70 cm, 2023</em></figcaption>
+        </figure>
+        <figure>
+          <img src="untitled copy.png" alt="Untitled" />
+          <figcaption><strong><em>Untitled</em></strong><br /><em>Pencil on moleskine notebook, 2022</em></figcaption>
+        </figure>
+      </div>
+
+      <!-- Row 3 — 3 columns: The Shadows Lengthen, Seasons in the Sun, Shame -->
+      <div class="gallery-grid gallery-grid--3">
+        <figure>
+          <img src="shadows.png" alt="The Shadows Lengthen" />
+          <figcaption><strong><em>The Shadows Lengthen</em></strong><br /><em>Digital drawing, 2023</em></figcaption>
+        </figure>
+        <figure>
+          <img src="seasons.png" alt="Seasons in the Sun" />
+          <figcaption><strong><em>Seasons in the Sun</em></strong><br /><em>Digital drawing, 2023</em></figcaption>
+        </figure>
+        <figure>
+          <img src="shame.png" alt="Shame" />
+          <figcaption><strong><em>Shame</em></strong><br /><em>Digital drawing, 2023</em></figcaption>
+        </figure>
+      </div>
+
+      <!-- Row 4 — 2 columns: Not Like Other Girls, Anger is for Dogs.
+           gallery-row--equal forces a shared aspect-ratio so both pieces
+           render at the exact same height, regardless of source image ratio. -->
+      <div class="gallery-grid gallery-grid--2 gallery-row--equal">
+        <figure>
+          <img src="notlikeothergirls.png" alt="Not Like Other Girls" />
+          <figcaption><strong><em>Not Like Other Girls</em></strong><br /><em>Charcoal on paper, 50 x 70 cm, 2023</em></figcaption>
+        </figure>
+        <figure>
+          <img src="anger.png" alt="Anger is for Dogs" />
+          <figcaption><strong><em>Anger is for Dogs</em></strong><br /><em>Pen on moleskine notebook, 2022</em></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ---- TV Dinner (compact = smaller artworks, same outer container) ---- -->
+    <section id="drawings-tvdinner" class="page page--gallery gallery--compact">
+      <h1 class="page-title gallery-title">TV Dinner</h1>
+      <p class="gallery-blurb">A collection of illustrations inspired by scenes from well-loved films and TV shows.</p>
+      <!-- Row 1 -->
+      <div class="gallery-grid gallery-grid--2">
+        <figure>
+          <img src="amoment.png" alt="A Moment of Innocence" />
+          <figcaption><strong><em>A Moment of Innocence</em> (1996)</strong><br /><em>Digital drawing, 2022</em></figcaption>
+        </figure>
+        <figure>
+          <img src="pierrot.png" alt="Pierrot le Fou" />
+          <figcaption><strong><em>Pierrot le Fou</em> (1965)</strong><br /><em>Digital drawing, 2020</em></figcaption>
+        </figure>
+      </div>
+      <!-- Row 2 -->
+      <div class="gallery-grid gallery-grid--2">
+        <figure>
+          <img src="hiroshima.png" alt="Hiroshima Mon Amour" />
+          <figcaption><strong><em>Hiroshima, Mon Amour</em> (1959)</strong><br /><em>Pencil on black paper, 700 x 543 mm, 2022</em></figcaption>
+        </figure>
+        <figure>
+          <img src="alger.png" alt="La Bataille d'Alger" />
+          <figcaption><strong><em>La Bataille d&rsquo;Alger</em> (1966)</strong><br /><em>Pencil on moleskine notebook, 2021</em></figcaption>
+        </figure>
+      </div>
+      <!-- Row 3 -->
+      <div class="gallery-grid gallery-grid--2">
+        <figure>
+          <img src="pontneuf.png" alt="Les Amants du Pont-Neuf" />
+          <figcaption><strong><em>Les Amants du Pont-Neuf</em> (1991)</strong><br /><em>Digital drawing, 2022</em></figcaption>
+        </figure>
+        <figure>
+          <img src="dark.png" alt="Dark" />
+          <figcaption><strong><em>Dark</em> (2020)</strong><br /><em>Pencil on moleskine notebook, 2021</em></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===========================================================
+         ABOUT
+         3-column layout: portrait | "BIO" label | bio text.
+         A horizontal hairline runs above the bio area.
+         =========================================================== -->
+    <section id="about" class="page page--about">
+      <div class="about-rule"></div>
+      <div class="about-grid">
+        <figure class="about-portrait">
+          <!-- Photo is intentionally not clickable and protected from saving:
+               draggable=false, right-click suppressed, drag/select disabled in CSS.
+               (Note: nothing on the web is fully un-savable, but this discourages it.) -->
+          <img src="BioPhoto.png" alt="Portrait of Sasha Behar"
+               draggable="false"
+               oncontextmenu="return false;"
+               ondragstart="return false;"
+               onmousedown="event.preventDefault(); return false;" />
+        </figure>
+        <p class="about-label">BIO</p>
+        <div class="about-text">
+          <p>Sasha Behar is a Franco American-writer and occasional painter, raised in Paris&rsquo;s least cinematic arrondissement (the 15th). Her worldview was shaped by three steady forces: Catalan hedonism, Irish and Jewish guilt, and the unpredictable logic of an alcoholic parent.</p>
+          <p>Her love of film began at age five when she accompanied her carpenter father to work on the set of <em>Marie Antoinette</em>. She fell in love like you fall off a roof: suddenly, and with no real plan for the landing. Behar graduated with High Honors from the Sorbonne, where she studied English and History. She has since worked throughout the film and television industry, from production to creative development, on projects for Disney+, HBO, Gaumont, and Prime Video.</p>
+          <p>She has written two short films, two original pilots, and three feature-length screenplays, with recurring themes of dysfunctional families, class rage, cultural displacement, and the quiet (or not so quiet) violence of trying to belong. She has a soft spot for children of chaos, failed revolutionaries, and people who love each other badly. She is currently completing her first novel, <em>Canaries</em>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===========================================================
+         CONTACT
+         Centered oval with email pill, plus a small decorative mark.
+         =========================================================== -->
+    <section id="contact" class="page page--contact">
+      <!-- Brand mark above the contact heading -->
+      <img src="Logo.png" alt="Sasha G. Behar" class="contact-logo" />
+      <h1 class="page-title contact-title">Contact Sasha for work or general inquiries:</h1>
+
+      <!-- Contact form. Submitting opens the user's mail client addressed to
+           sashagbehar@gmail.com with the form contents prefilled.  For server-side
+           delivery, swap action/method to a service like Formspree or Basin. -->
+      <form class="contact-form"
+            action="mailto:sashagbehar@gmail.com"
+            method="post"
+            enctype="text/plain">
+
+        <div class="field-row">
+          <label class="field">
+            <span class="field-label">First Name <span class="field-required">(required)</span></span>
+            <input type="text" name="first_name" required />
+          </label>
+          <label class="field">
+            <span class="field-label">Last Name <span class="field-required">(required)</span></span>
+            <input type="text" name="last_name" required />
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field-label">Email <span class="field-required">(required)</span></span>
+          <input type="email" name="email" required />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Message <span class="field-required">(required)</span></span>
+          <textarea name="message" rows="6" required></textarea>
+        </label>
+
+        <button type="submit" class="contact-send">Send</button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ===========================================================
+       FOOTER — single Contact button that links to the Contact page
+       =========================================================== -->
+  <footer class="site-footer">
+    <a class="footer-contact" href="#contact" data-section="contact">Contact</a>
+  </footer>
+
+  <!-- ===========================================================
+       LIGHTBOX (artwork overlay)
+       Hidden by default. JS opens it when a gallery figure is clicked.
+       =========================================================== -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Artwork preview">
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <button class="lightbox-prev"  type="button" aria-label="Previous">&#8249;</button>
+    <button class="lightbox-next"  type="button" aria-label="Next">&#8250;</button>
+    <figure class="lightbox-inner">
+      <img id="lightbox-image" src="" alt="" />
+      <figcaption class="lightbox-caption" id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

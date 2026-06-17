@@ -1,0 +1,1349 @@
+/* =============================================================
+   SASHA BEHAR — Portfolio styles
+   Editorial / NYT-inspired layout, black & white.
+
+   Typography rules:
+     - Default body text:           Times New Roman (serif)
+     - Page titles:                 Times New Roman, bold italic
+                                    (left-aligned, no all caps)
+     - Script titles, painting &
+       drawing titles, awards,
+       small section labels:        ITC Franklin Gothic LT
+                                    (with safe sans-serif fallbacks)
+   ============================================================= */
+
+
+/* ---------- Reset & root tokens ---------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+:root {
+  /* Editorial palette */
+  --color-bg:       #ffffff;
+  --color-text:     #111111;
+  --color-muted:    #6b6b6b;
+  --color-rule:     #1a1a1a;
+  --color-hairline: #d8d8d8;
+  --color-pill:     #c9c8e6;   /* muted lavender, matches the email pill in the mockup */
+
+  /* Type stacks */
+  --font-serif: "Times New Roman", Times, "Liberation Serif", serif;
+  --font-sans:  "ITC Franklin Gothic LT", "Libre Franklin",
+                "Franklin Gothic Medium", "Franklin Gothic",
+                "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+
+  /* Layout */
+  --maxw:   1100px;
+  --gutter: clamp(16px, 4vw, 56px);
+}
+
+
+/* ---------- Base ---------- */
+
+body {
+  font-family: var(--font-serif);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.55;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a   { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+
+/* ---------- Header ---------- */
+
+.site-header {
+  text-align: center;
+  padding: clamp(20px, 3.5vw, 36px) var(--gutter) 0;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+/* Logo. Sized large on the home page, smaller on inner pages. */
+.logo-link {
+  display: block;
+  margin: 0 auto 18px;
+  /* No transition: switching between home and inner pages must be instant
+     so the header height never animates and titles never appear to drift
+     vertically while the logo resizes. */
+}
+.logo {
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Default (home) — generous logo size, slightly larger than before */
+body[data-page="home"] .logo-link { max-width: 760px; }
+
+/* Inner pages — logo shrinks like in the Canva mockups, also a touch larger */
+body:not([data-page="home"]) .logo-link { max-width: 500px; }
+
+/* Compact NYT-style navigation: thin double rule above and below,
+   tight vertical padding, and unified styling for both <a> and <button>
+   children so every label sits on the exact same baseline. */
+.main-nav {
+  border-top:    3px double var(--color-rule);
+  border-bottom: 3px double var(--color-rule);
+  padding: 7px 0;                        /* tighter — was 14px */
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(18px, 3vw, 40px);           /* tighter horizontal rhythm */
+  justify-content: center;
+  align-items: center;                   /* every item centered vertically */
+}
+
+.nav-list li {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+/* Nav labels — both <a> and <button> share IDENTICAL styling so their
+   text baselines line up perfectly across links and dropdown triggers. */
+.nav-list a,
+.nav-list .nav-trigger {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 0.88rem;                    /* slightly smaller — was 1rem */
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-transform: none;
+  color: inherit;
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0 2px;                        /* identical, tight padding */
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  -webkit-appearance: none;              /* strip default button styles in WebKit */
+  appearance: none;
+  text-align: center;
+}
+
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+.nav-list a:hover,
+.nav-list a:focus { color: #000; }
+.nav-list a:hover::after,
+.nav-list a:focus::after,
+.nav-list a.is-active::after { transform: scaleX(1); }
+
+/* ----- Nav dropdowns (Paintings / Drawings) ----- */
+
+.has-dropdown { position: relative; }
+
+/* (The trigger's typography is set together with the nav links above
+    via the combined `.nav-list a, .nav-list .nav-trigger` selector
+    so both elements share an identical baseline.) */
+.nav-trigger::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+.has-dropdown:hover .nav-trigger::after,
+.has-dropdown:focus-within .nav-trigger::after,
+.has-dropdown.is-open .nav-trigger::after { transform: scaleX(1); }
+
+/* The slide-down dropdown panel */
+.nav-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 14px 22px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 220px;
+  background: #ffffff;
+  border-top: 1px solid var(--color-rule);
+  border-bottom: 1px solid var(--color-rule);
+  box-shadow: 0 12px 22px -16px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.3s ease, visibility 0.25s;
+  z-index: 100;
+  text-align: center;
+}
+.nav-dropdown li { margin: 0; padding: 0; }
+.nav-dropdown li + li { margin-top: 6px; }
+
+.nav-dropdown a {
+  display: block;
+  padding: 6px 4px;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  color: var(--color-text);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.nav-dropdown a:hover,
+.nav-dropdown a:focus { border-bottom-color: var(--color-rule); }
+.nav-dropdown a::after { display: none; }    /* override the underline rule on plain nav links */
+
+/* Reveal on hover, on keyboard focus, or when JS toggles .is-open (touch) */
+.has-dropdown:hover .nav-dropdown,
+.has-dropdown:focus-within .nav-dropdown,
+.has-dropdown.is-open .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 720px) {
+  /* ----- Mobile navigation -----
+     The top-level titles (Work, Paintings, Drawings, About, Contact) stay in
+     a horizontal row, just like desktop. Only a category's series subpages
+     drop DOWN vertically. The series panel is absolutely positioned, so
+     opening it never shifts or wraps the row of titles above. It opens on a
+     tap only (JS toggles .is-open) — hover/focus must not, since those linger
+     and behave unpredictably on touch. */
+
+  /* Suppress the desktop hover/focus reveal so the panel opens on tap alone. */
+  .has-dropdown:hover .nav-dropdown,
+  .has-dropdown:focus-within .nav-dropdown {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(-6px);
+  }
+  /* Tap to reveal — placed last so it wins over the reset above. */
+  .has-dropdown.is-open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Keep the floating panel comfortably sized on small screens. */
+  .nav-dropdown {
+    min-width: 180px;
+    padding: 12px 18px;
+  }
+  .nav-dropdown a { font-size: 0.95rem; }
+}
+
+
+/* ---------- Pages (single-page navigation) ---------- */
+
+.site-main {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 160px;   /* generous space above the footer */
+}
+
+.page {
+  display: none;
+  animation: fadeIn 0.35s ease both;
+  padding: 0;
+  margin: 0;
+}
+.page.is-active { display: block; }
+
+/* Pure opacity fade — no translate, so titles always render at the
+   exact same y-position across pages (no transient offset). */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Page titles — ITC Franklin Gothic LT, italic, consistent across all pages.
+   Only the TOP edges are locked with !important so every title sits on the
+   exact same horizontal baseline. Other margins remain overridable per-page
+   (e.g. .contact-title can still center itself with margin-left: auto). */
+.page-title {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.05rem, 1.65vw, 1.3rem);
+  line-height: 1.2;
+  margin-top: 0 !important;          /* nothing pushes the title down from above */
+  margin-right: 0;
+  margin-bottom: 36px;
+  margin-left: 0;
+  padding-top: 0 !important;
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  color: var(--color-text);
+  text-align: left;
+  display: block;
+}
+
+/* Clickable variant for Paintings / Drawings — accordion toggle.
+   Clicking expands or collapses the series list with a slide-down. */
+.page-title--toggle {
+  background: none;
+  border: 0;
+  padding: 0 0 4px;
+  cursor: pointer;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.15;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.page-title--toggle::after {
+  content: "";
+  display: inline-block;
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid currentColor;
+  transition: transform 0.35s ease;
+  margin-top: 6px;
+}
+.page-title--toggle[aria-expanded="false"]::after { transform: rotate(-90deg); }
+.page-title--toggle:hover { border-bottom-color: var(--color-rule); }
+
+/* Series list — slide-down container */
+.series-list {
+  overflow: hidden;
+  max-height: 4000px;        /* large enough to reveal everything */
+  transition: max-height 0.5s ease, opacity 0.35s ease;
+  opacity: 1;
+}
+.series-list.is-collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
+/* ---------- HERO (Home) ---------- */
+
+.hero {
+  position: relative;
+  margin: 96px auto 0;          /* breathing room above the artwork */
+  max-width: 860px;             /* slightly larger artwork */
+  width: 100%;
+  transform: translateX(-14%);
+}
+@media (max-width: 760px) {
+  .hero { transform: none; }
+}
+.hero-picture { display: block; width: 100%; }
+.hero-image { width: 100%; height: auto; display: block; }
+
+/* Cursive banner title overlays — each is a full-hero PNG authored at the
+   same aspect ratio as Openingphoto, so positioning is automatic: stretch
+   to 100% × 100% and the cursive lands where it was painted. The matching
+   .hotspot below each one carries the click + drives the hover-rise. */
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter    0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+/* Hover-rise: hovering (or keyboard-focusing) any banner's hotspot lifts
+   the matching title overlay upward by a small, eased amount. */
+.hero:has(.hotspot--scripts:hover)           .banner-overlay--scripts,
+.hero:has(.hotspot--scripts:focus-visible)   .banner-overlay--scripts,
+.hero:has(.hotspot--drawings:hover)          .banner-overlay--drawings,
+.hero:has(.hotspot--drawings:focus-visible)  .banner-overlay--drawings,
+.hero:has(.hotspot--about:hover)             .banner-overlay--about,
+.hero:has(.hotspot--about:focus-visible)     .banner-overlay--about,
+.hero:has(.hotspot--paintings:hover)         .banner-overlay--paintings,
+.hero:has(.hotspot--paintings:focus-visible) .banner-overlay--paintings {
+  transform: translateY(-1.2%);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
+}
+
+/* Click hotspots over each banner. Sized to comfortably cover each girl's
+   chest/sash region. left/top/width/height = % of the hero image. */
+.hotspot {
+  position: absolute;
+  display: block;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  outline: none;
+}
+.hotspot:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+/* Each hotspot is sized to comfortably cover its banner with a clear gap
+   to its neighbours, so About isn't accidentally swallowed by Drawings or
+   Paintings on either side. ~1% gap between adjacent hotspots. */
+.hotspot--scripts   { left: 47%; top: 57%; width: 12%; height: 21%; }
+.hotspot--drawings  { left: 60%; top: 59%; width:  7%; height: 16%; }
+.hotspot--about     { left: 68%; top: 59%; width:  9%; height: 16%; z-index: 2; }
+.hotspot--paintings { left: 78%; top: 57%; width: 14%; height: 21%; }
+
+/* On phones the hero shrinks but the % stays the same, so we slightly
+   enlarge each hotspot's tap area without changing the visual layout. */
+@media (max-width: 720px) {
+  .hotspot--about     { width: 10%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-overlay { transition: none; }
+  .hero:has(.hotspot--scripts:hover)           .banner-overlay--scripts,
+  .hero:has(.hotspot--scripts:focus-visible)   .banner-overlay--scripts,
+  .hero:has(.hotspot--drawings:hover)          .banner-overlay--drawings,
+  .hero:has(.hotspot--drawings:focus-visible)  .banner-overlay--drawings,
+  .hero:has(.hotspot--about:hover)             .banner-overlay--about,
+  .hero:has(.hotspot--about:focus-visible)     .banner-overlay--about,
+  .hero:has(.hotspot--paintings:hover)         .banner-overlay--paintings,
+  .hero:has(.hotspot--paintings:focus-visible) .banner-overlay--paintings {
+    transform: none; filter: none;
+  }
+}
+
+
+/* ---------- WORK / SCREENWRITING ----------
+   3-column editorial layout per script:
+     [poster] | [TITLE / format] | [description + awards]
+   Thin hairline between entries.
+*/
+
+/* Subheading directly under "Screenwriting" — italic serif, slightly larger
+   for visual prominence and pulled tight to the page title above. */
+.screenwriting-subhead {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  margin: -32px 0 48px;        /* tucked closer to "Screenwriting" above */
+  padding: 0;
+}
+
+/* Scripts list — extra left-side margin pushes the whole block inward
+   from the page edge so it reads visually further right of the title. */
+.scripts-list {
+  display: grid;
+  gap: 36px;
+  max-width: 1040px;
+  margin: 0 0 0 clamp(60px, 18%, 260px);   /* extra margin on the left */
+  padding-left: 0;
+}
+
+.script {
+  display: grid;
+  grid-template-columns: 160px 170px 1fr;
+  gap: 32px;
+  align-items: start;
+  border-top: 1px solid var(--color-hairline);
+  padding-top: 28px;
+}
+.script:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* Poster column — square frame, image preserved (no cropping or distortion) */
+.script-poster {
+  display: block;
+  overflow: hidden;
+  background: #ffffff;
+  aspect-ratio: 1 / 1;
+}
+.script-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;       /* preserves the original aspect — no crop */
+  transition: transform 0.5s ease;
+}
+.script-poster:hover img { transform: scale(1.03); }
+
+/* Middle column — title + format */
+.script-meta {
+  padding-top: 4px;
+}
+.script-title {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+.script-format {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* Right column — description + awards */
+.script-body {
+  padding-top: 4px;
+}
+.script-description {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 18px;
+  text-align: justify;
+}
+/* (legacy .script-status rule removed — see the matching laurel-style version below) */
+
+.script-awards {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Award badges — laurel wreath backdrop (Laurelwreath.png) with small
+   uppercase text centered between the branches. */
+.award-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;             /* much smaller */
+  height: 60px;
+  text-align: center;
+  padding: 0 18px;
+  background-image: url('Laurelwreath.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 0;
+}
+.award-text {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-sans);
+  font-size: 0.46rem;       /* much smaller */
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* "In development" matches the laurel-text style exactly */
+.script-status {
+  font-family: var(--font-sans);
+  font-size: 0.46rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--color-text);
+  font-weight: 600;
+  font-style: normal;
+  margin: 0;
+}
+.script-status em { font-style: normal; }   /* keep in-line with the badge style */
+
+
+/* ---------- PAINTINGS / DRAWINGS — series list ---------- */
+
+.series-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 48px 40px;
+  max-width: 880px;
+  margin: 0 auto;
+  /* (slide-down behaviour set further up alongside .series-list.is-collapsed) */
+}
+
+.series {
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.series-cover {
+  display: block;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+.series-cover img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: grayscale(10%);
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+.series:hover .series-cover img,
+.series:focus-visible .series-cover img {
+  transform: scale(1.04);
+  filter: grayscale(0%);
+}
+
+.series-meta {
+  display: block;
+  padding-top: 14px;
+}
+.series-title {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0;
+  letter-spacing: 0.005em;
+}
+
+
+/* ---------- Series detail (gallery) ---------- */
+
+/* Gallery sections span the full site-main width (same as Work/Contact)
+   so every page-title's left edge starts at the exact same x-position.
+   The artwork grid itself is constrained to 920px and centered, giving
+   cohesive artwork-column width across all gallery pages. */
+.gallery,
+.page--gallery {
+  width: 100%;
+  animation: fadeIn 0.35s ease both;
+}
+.page--gallery .gallery-grid {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gallery-back {
+  background: none;
+  border: 0;
+  padding: 0 0 8px;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--color-muted);
+  margin-bottom: 22px;
+  transition: color 0.2s ease;
+}
+.gallery-back:hover { color: var(--color-text); }
+
+/* Gallery titles inherit .page-title — no overrides, so they share the same
+   baseline and bottom-margin as every other page title. */
+.gallery-title { /* intentionally empty — see .page-title */ }
+
+/* Egypt is Within You — small extra breathing room beneath the title
+   before the artworks begin. */
+#paintings-grayhairs .page-title { margin-bottom: 52px; }
+
+.gallery-blurb {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0 0 64px;             /* more space between blurb and the grid below */
+  color: var(--color-text);
+}
+.gallery-blurb-credit {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-top: 6px;
+}
+
+.gallery-grid {
+  display: grid;
+  gap: 36px 28px;
+  margin-bottom: 28px;          /* spacing between consecutive grid rows */
+}
+.gallery-grid:last-child { margin-bottom: 0; }
+
+.gallery-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.gallery-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.gallery-grid figure { margin: 0; }
+
+/* Items can span two columns when called out with .span-2 */
+.gallery-grid--3 figure.span-2 { grid-column: span 2; }
+.gallery-grid--2 figure.span-2 { grid-column: span 2; }
+
+.gallery-grid img {
+  width: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  background: #f5f5f5;
+  transition: transform 0.4s ease;
+  cursor: zoom-in;
+}
+.gallery-grid img:hover { transform: scale(1.01); }
+
+/* Normalize a non-square work (e.g. Teeth in Buail Abhaile) to the same
+   square footprint as its row-mates. object-fit:contain shows the full
+   painting inside that box — same height, never cropped. */
+.gallery-grid figure.match-square img {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+/* Equal-height row (e.g. Girlobouros row 4 — Not Like Other Girls / Anger).
+   Both images render at the same height with NO cropping (object-fit:contain),
+   so the full Not Like Other Girls artwork is always visible.
+   Anger is portrait, so it sits centered with whitespace on the sides. */
+.gallery-row--equal img {
+  width: 100%;
+  height: 360px;
+  object-fit: contain;
+  background: #ffffff;
+  aspect-ratio: auto;
+}
+
+/* Compact gallery (e.g. Gray Hairs, TV Dinner) — same outer container as
+   every other gallery (.gallery-grid sits inside the 920px max-width set
+   above). The grid here is narrowed and tightly gapped so adjacent
+   artworks read close to one another, with consistent spacing throughout. */
+.gallery--compact .gallery-grid {
+  max-width: 700px;             /* narrower so cells aren't oversized → tight spacing */
+  margin-left: auto;
+  margin-right: auto;
+  gap: 28px 24px;               /* matches Buail Abhaile's column rhythm */
+}
+.gallery--compact .gallery-grid img {
+  max-width: 320px;             /* slightly larger Gray Hairs artworks */
+  margin: 0 auto;
+  display: block;
+}
+.gallery--compact figure.is-medium img {
+  max-width: 540px;            /* Chayim, Upsherin, Untitled — larger featured pieces */
+}
+.gallery--compact figure { text-align: center; }
+
+/* ---------- ROW-EQUAL HEIGHTS (all multi-column gallery rows) ----------
+   Every artwork that shares a row renders at the same height while keeping
+   its original aspect ratio (object-fit:contain → no cropping, no distortion;
+   narrower works just sit centered with a little whitespace on the sides).
+   Scoped to multi-column grids only (.gallery-grid--3 and the non-spanning
+   figures of .gallery-grid--2) so featured full-width works and the Gray
+   Hairs pair keep their own custom sizing. */
+.gallery-grid--3 figure img,
+.gallery-grid--2 figure:not(.span-2) img {
+  width: 100%;
+  height: 320px;
+  object-fit: contain;
+  background: #ffffff;
+  aspect-ratio: auto;
+}
+
+/* ---------- GRAY HAIRS ---------- */
+/* The two small works (In My Palm, Lashes of Fire) sit close together at an
+   identical square size, side by side. Flexbox keeps them snug (no wide
+   half-cells creating a gap) and the pair together spans the same total
+   width as the larger works below. */
+#paintings-grayhairs .gallery-grid--pair {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px;                 /* matches every other gallery page */
+  max-width: 620px;
+  margin: 0 auto 36px;       /* uniform vertical gap to the next work */
+}
+#paintings-grayhairs .gallery-grid--pair figure { margin: 0; flex: 1; }
+#paintings-grayhairs .gallery-grid--pair img {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: #ffffff;
+  height: auto;              /* override the global row-equal height */
+}
+/* Three larger works match the pair's width, with even vertical spacing. */
+#paintings-grayhairs .gallery--compact figure.is-medium img,
+#paintings-grayhairs figure.is-medium img { max-width: 620px; }
+#paintings-grayhairs .gallery-grid--2 { row-gap: 36px; }
+/* Untitled a little bigger. */
+#paintings-grayhairs .gallery-grid--2 figure.is-medium img[alt="Untitled"] { max-width: 480px; }
+/* In My Palm + Lashes of Fire a little bigger (pair grows together so they
+   still line up identically and span the row evenly). */
+#paintings-grayhairs .gallery-grid--pair { max-width: 700px; }
+/* Upsherin: keep the same display width but trim its rendered height so it
+   doesn't dominate vertically. object-fit:cover with a slightly wider
+   aspect ratio crops a little off top + bottom, centered. */
+#paintings-grayhairs figure.is-medium img[alt="Upsherin"] {
+  aspect-ratio: 1.15 / 1;
+  object-fit: cover;
+  object-position: center;
+  height: auto;
+}
+
+/* ---------- BUAIL ABHAILE ----------
+   Every artwork — across row 1 (Plastic, Teeth, Paddy) and row 2 (Ladybug,
+   Cross) — renders at the SAME visible height, never cropped. Achieved by
+   flex-laying each row out with each image sized by height (width: auto),
+   so they sit at their natural aspect ratios side by side. The container
+   is widened so even Teeth (the widest piece, 1.34 ratio) fits at the
+   chosen height. */
+#paintings-buailabhaile .gallery-grid {
+  max-width: 1140px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px;
+}
+#paintings-buailabhaile .gallery-grid figure { margin: 0; }
+#paintings-buailabhaile .gallery-grid img {
+  width: auto;
+  height: 320px;             /* default visible height for row 1 */
+  max-width: 100%;
+  object-fit: contain;
+  background: #ffffff;
+  aspect-ratio: auto;
+}
+/* Row 2 (Ladybug, Cross) renders a bit larger than row 1, still uncropped
+   and still at an identical height to each other. */
+#paintings-buailabhaile .gallery-grid--2 img { height: 420px; }
+
+/* ---------- GIRLOBOUROS ----------
+   Same approach as Buail Abhaile: flex each row, every image sized by
+   height with width:auto so they keep natural aspect ratios and sit at the
+   exact same visible height as their row-mates (never cropped). The shared
+   22px gap matches every other page for site-wide spacing continuity.
+   Per-row heights are chosen so each row's images all fit at that height
+   inside the 960px container. */
+#drawings-girlobouros .gallery-grid {
+  max-width: 960px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px;
+}
+#drawings-girlobouros .gallery-grid figure { margin: 0; }
+#drawings-girlobouros .gallery-grid img {
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  background: #ffffff;
+  aspect-ratio: auto;
+}
+/* Per-row heights (every image in a given row renders at this exact h). */
+#drawings-girlobouros .gallery-grid--3 img { height: 380px; }
+#drawings-girlobouros .gallery-grid--2:not(.gallery-row--equal) img { height: 320px; }
+#drawings-girlobouros .gallery-row--equal img { height: 400px; }
+
+/* ---------- TV DINNER ----------
+   Exactly the Girlobouros pattern: each row is its own flex container, every
+   image sized by height (width: auto) so the two works in a row render at
+   the same visible height at their natural aspect ratios (never cropped).
+   Container 960px and gap 22px match Girlobouros for site-wide continuity. */
+#drawings-tvdinner .gallery-grid {
+  max-width: 960px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px;
+}
+#drawings-tvdinner .gallery-grid figure { margin: 0; }
+#drawings-tvdinner .gallery--compact .gallery-grid img,
+#drawings-tvdinner .gallery-grid img {
+  width: auto;
+  height: 350px;             /* default height; rows 1 + 3 grow below */
+  max-width: 100%;
+  object-fit: contain;
+  background: #ffffff;
+  aspect-ratio: auto;
+}
+/* Row 1 (A Moment of Innocence + Pierrot le Fou) and Row 3 (Pont-Neuf + Dark)
+   render larger so they match the presence of the wide Row 2 (Hiroshima +
+   Alger). Row 1 is taller because both works are portrait; Row 3 is capped
+   by the wider of its two ratios. */
+#drawings-tvdinner .gallery-grid:nth-of-type(1) img { height: 460px; }
+#drawings-tvdinner .gallery-grid:nth-of-type(3) img { height: 400px; }
+
+.gallery-grid figcaption {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-top: 8px;
+  text-align: center;
+  color: var(--color-text);
+}
+.gallery-grid figcaption strong em {
+  font-weight: 700;
+  font-style: italic;
+}
+
+
+/* ---------- ABOUT ---------- */
+
+.about-rule {
+  height: 1px;
+  background: var(--color-rule);
+  margin: 8px auto 28px;
+  max-width: 920px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 170px 60px 1fr;   /* portrait column a touch larger */
+  gap: 36px;
+  max-width: 740px;                        /* slightly wider to balance the larger photo */
+  margin: 0 auto;
+  align-items: start;
+}
+
+.about-portrait { margin: 0; }
+.about-portrait img {
+  width: 100%;
+  opacity: 0.78;             /* softer, more transparent */
+  transition: opacity 0.3s ease;
+  /* Protect the photo from being saved/dragged/selected */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  cursor: default;
+}
+.about-portrait img:hover { opacity: 1; }
+
+.about-label {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  margin: 4px 0 0;
+  text-align: left;
+}
+
+.about-text p {
+  font-size: 0.86rem;          /* smaller body text */
+  line-height: 1.7;
+  margin: 0 0 14px;
+  text-align: justify;
+  hyphens: auto;
+}
+.about-text p:last-child { margin-bottom: 0; }
+
+
+/* ---------- CONTACT — neutral palette, consistent with the rest of the site ---------- */
+
+/* About has no page-title, so push the bio rule + content down to give
+   it more breathing room beneath the navigation. */
+.page--about {
+  padding-top: 56px;
+}
+
+/* Contact KEEPS its title at the same y-position as every other page
+   title (no padding-top on the section), but the title now has a much
+   larger margin-bottom so there's more space between the heading and
+   the form below it. */
+.page--contact {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+/* Brand mark above the contact heading — small, centered, understated. */
+.contact-logo {
+  display: block;
+  width: 84px;
+  height: auto;
+  margin: 0 auto 24px;
+  opacity: 0.92;
+}
+
+/* Contact heading — styled to match the form labels (Times New Roman serif,
+   normal weight, same color as the labels below). Centered horizontally
+   and given extra space above to separate it from the navigation. */
+.contact-title {
+  max-width: 720px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+  font-family: var(--font-serif);
+  font-style: normal;            /* not italic — matches the field-label style */
+  font-weight: 400;
+  font-size: 1rem;               /* same scale as the form labels */
+  letter-spacing: 0;
+  color: var(--color-text);
+}
+/* Space between the navigation and the contact logo/heading. */
+.page--contact { padding-top: 36px !important; }
+
+.contact-form {
+  display: block;
+  max-width: 640px;
+  margin: 0 auto;             /* center the form on the page */
+  text-align: center;
+}
+
+.field-name {
+  border: 0;
+  padding: 0;
+  margin: 0 0 24px;
+}
+.field-legend {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  margin: 0 0 8px;
+  padding: 0;
+  color: var(--color-text);
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  text-align: left;           /* keep individual labels above each input readable */
+}
+
+.field {
+  display: block;
+  margin-bottom: 24px;
+  text-align: left;
+}
+.field-label {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: var(--color-text);
+}
+.field-required {
+  color: var(--color-muted);
+  font-size: 0.88em;
+  margin-left: 4px;
+  font-style: italic;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid var(--color-hairline);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--color-text);
+  padding: 12px 14px;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.contact-form input[type="text"],
+.contact-form input[type="email"] {
+  height: 48px;
+}
+.contact-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+.contact-form input:focus,
+.contact-form textarea:focus { border-color: var(--color-rule); }
+
+.contact-send {
+  background: var(--color-text);
+  color: #ffffff;
+  border: 0;
+  padding: 12px 32px;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  margin-top: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.contact-send:hover {
+  background: #000000;
+  transform: translateY(-1px);
+}
+
+
+/* ---------- LIGHTBOX ---------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  /* Soft, frosted translucent white — the gallery dissolves behind the work
+     rather than being blacked out, for a bright, contemporary, high-end feel. */
+  background: rgba(250, 250, 249, 0.72);
+  -webkit-backdrop-filter: blur(24px) saturate(118%);
+  backdrop-filter: blur(24px) saturate(118%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px clamp(48px, 6vw, 80px);
+  animation: lightboxFade 0.3s ease both;   /* overlay eases in smoothly */
+  touch-action: pan-y;                       /* let JS handle horizontal swipes */
+}
+.lightbox[hidden] { display: none; }
+
+/* Background overlay fades in on open. */
+@keyframes lightboxFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lightbox-inner {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 100%;
+  max-height: 100%;
+  will-change: transform, opacity;
+}
+
+/* Subtle, cinematic entrance for the artwork + title. Re-triggered by JS each
+   time the lightbox opens or the viewer steps to another piece. The slide
+   direction follows the navigation direction (next slides in from the right,
+   prev from the left); the first open simply fades up. */
+.lightbox-inner.lb-open { animation: lbOpenUp  0.42s ease both; }
+.lightbox-inner.lb-next { animation: lbSlideIn 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.lightbox-inner.lb-prev { animation: lbSlideInRev 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@keyframes lbOpenUp {
+  from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes lbSlideIn {
+  from { opacity: 0; transform: translateX(36px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes lbSlideInRev {
+  from { opacity: 0; transform: translateX(-36px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-inner.lb-open,
+  .lightbox-inner.lb-next,
+  .lightbox-inner.lb-prev { animation: none; }
+}
+.lightbox-inner img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;            /* preserve each artwork's true proportions */
+  background: #ffffff;
+  cursor: default;
+  /* Clean white frame/matte around every artwork in the carousel. */
+  border: 12px solid #ffffff;
+  /* Soft shadow lifts the work off the frosted-white backdrop. */
+  box-shadow: 0 30px 70px -28px rgba(0, 0, 0, 0.45),
+              0 2px 10px -4px rgba(0, 0, 0, 0.12);
+}
+.lightbox-caption {
+  color: var(--color-text);       /* dark text on the light overlay */
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  text-align: center;
+  max-width: 60ch;
+  line-height: 1.45;
+}
+.lightbox-caption strong em {
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Close / prev / next controls */
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: none;
+  border: 0;
+  color: var(--color-text);       /* dark controls on the light overlay */
+  cursor: pointer;
+  line-height: 1;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 0.55;
+}
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover { opacity: 1; }
+
+.lightbox-close {
+  top: 18px;
+  right: 24px;
+  font-size: 2.2rem;
+}
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  padding: 0 16px;
+}
+.lightbox-prev { left: 8px; }
+.lightbox-next { right: 8px; }
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-3px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(3px); }
+
+
+/* ---------- FOOTER ---------- */
+
+.site-footer {
+  text-align: center;
+  padding: 32px var(--gutter) 48px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+/* Footer Contact — simple text link, minimal styling */
+.footer-contact {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  padding: 4px 2px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.footer-contact:hover,
+.footer-contact:focus {
+  border-bottom-color: var(--color-rule);
+  outline: none;
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 820px) {
+  .script {
+    grid-template-columns: 130px 1fr;
+    gap: 18px 22px;
+  }
+  .script-meta { grid-column: 2; }
+  .script-body { grid-column: 1 / -1; }
+  .script-poster { grid-row: span 2; }
+}
+
+@media (max-width: 720px) {
+  body { font-size: 16px; }
+
+  .nav-list { gap: 14px; }
+  .nav-list a,
+  .nav-list .nav-trigger { font-size: 0.82rem; }
+
+  .gallery-grid--3,
+  .gallery-grid--2 { grid-template-columns: 1fr; }
+  .gallery-grid--3 figure.span-2,
+  .gallery-grid--2 figure.span-2 { grid-column: auto; }
+
+  /* Keep the Gray Hairs pair side-by-side but scaled to the phone width. */
+  #paintings-grayhairs .gallery-grid--pair img { width: 42vw; }
+
+  /* Buail Abhaile on mobile: stack the unified flex rows vertically. */
+  #paintings-buailabhaile .gallery-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  #paintings-buailabhaile .gallery-grid img {
+    height: auto;
+    width: 86%;
+  }
+
+  /* Girlobouros + TV Dinner on mobile: also stack vertically. */
+  #drawings-girlobouros .gallery-grid,
+  #drawings-tvdinner .gallery-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  #drawings-girlobouros .gallery-grid img,
+  #drawings-tvdinner .gallery-grid img {
+    height: auto;
+    width: 86%;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .about-label { margin-top: 8px; }
+
+  /* Remove the horizontal rule above the photo on mobile. */
+  .about-rule { display: none; }
+
+  /* About: shrink the portrait to a small, unobtrusive image on phones. */
+  .about-portrait img {
+    width: 110px;
+    max-width: 110px;
+  }
+
+  .contact-bubble {
+    padding: 40px 24px;
+    border-radius: 24px; /* relax oval on narrow screens */
+  }
+}
+
+@media (max-width: 540px) {
+  /* Work page on phones: very small, NON-clickable poster thumbnails.
+     The poster sits as a tiny square to the left of the title; the
+     description flows full-width beneath. pointer-events:none disables
+     the link so tapping a poster does nothing on mobile. */
+  .script {
+    grid-template-columns: 52px 1fr;
+    gap: 12px 14px;
+    align-items: start;
+  }
+  .script-poster {
+    width: 52px;
+    max-width: 52px;
+    aspect-ratio: 1 / 1;
+    grid-row: span 2;
+    pointer-events: none;        /* not clickable on mobile */
+    cursor: default;
+  }
+  .script-poster:hover img { transform: none; }   /* no hover zoom */
+  .script-meta { grid-column: 2; }
+  .script-body { grid-column: 1 / -1; }
+  .script-description { text-align: left; }
+}
